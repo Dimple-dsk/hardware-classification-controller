@@ -106,7 +106,17 @@ func (hcReconciler *HardwareClassificationReconciler) Reconcile(req ctrl.Request
 			"label", labelKey,
 		)
 		matchCount++
+		if host.Status.ErrorType == "registration error" {
+			hwcc.HardwareClassificationStatus.RegistrationErrorHosts += 1
+		} else if host.Status.ErrorType == "inspection error" {
+			hwcc.HardwareClassificationStatus.IntrospectionErrorHosts += 1
+		} else if host.Status.ErrorType == "provisioning error" {
+			hwcc.HardwareClassificationStatus.ProvisioningErrorHosts += 1
+		} else if host.Status.ErrorType == "power management error" {
+			hwcc.HardwareClassificationStatus.ProvisioningErrorHosts += 1
+		}
 	}
+	hwcc.HardwareClassificationStatus.ErrorHosts = hwcc.HardwareClassificationStatus.RegistrationErrorHosts + hwcc.HardwareClassificationStatus.IntrospectionErrorHosts + hwcc.HardwareClassificationStatus.ProvisioningErrorHosts + hwcc.HardwareClassificationStatus.ProvisioningErrorHosts
 
 	// Wait to delete the hardwareClassification resource until no
 	// hosts are labeled as matching its rules.

@@ -213,6 +213,38 @@ const (
 	Empty ErrorType = ""
 )
 
+// Total hosts in error state
+type ErrorHosts int
+
+// Total hosts in registration error state
+type RegistrationErrorHosts int
+
+// Total hosts in Provisioning error state
+type ProvisioningErrorHosts int
+
+// Total hosts in Power Management error state
+type PowerManagementErrorHosts int
+
+// Total hosts in Introspection error state
+type IntrospectionErrorHosts int
+
+const (
+	// ErrorHosts is count of Hosts in error state
+	ErrorHostsEmpty ErrorHosts = 0
+
+	// RegistrationErrorHosts is count of Hosts in Registration error state
+	RegistrationErrorHostsEmpty RegistrationErrorHosts = 0
+
+	// IntrospectionErrorHosts is count of Hosts in Introspection error state
+	IntrospectionErrorHostsEmpty IntrospectionErrorHosts = 0
+
+	// ProvisioningErrorHosts is count of Hosts in Provisioning error state
+	ProvisioningErrorHostsEmpty ProvisioningErrorHosts = 0
+
+	// PowerManagementErrorHosts is count of Hosts in Power Management error state
+	PowerManagementErrorHostsEmpty PowerManagementErrorHosts = 0
+)
+
 const (
 	//NoBaremetalHost no bmo host found message
 	NoBaremetalHost string = "No BareMetalHost Found"
@@ -233,6 +265,16 @@ type HardwareClassificationStatus struct {
 	ProfileMatchStatus ProfileMatchStatus `json:"profileMatchStatus,omitempty"`
 	// The last error message reported by the hardwareclassification system
 	ErrorMessage string `json:"errorMessage,omitempty"`
+	// The count of Hosts in error state
+	ErrorHosts ErrorHosts `json:"errorHosts,omitempty"`
+	// The count of hosts in registration error state
+	RegistrationErrorHosts RegistrationErrorHosts `json:"registrationErrorHosts,omitempty"`
+	// The count of hosts in introspection error state
+	IntrospectionErrorHosts IntrospectionErrorHosts `json:"introspectionErrorHosts,omitempty"`
+	// The count of hosts in provisioning error state
+	ProvisioningErrorHosts ProvisioningErrorHosts `json:"provisioningErrorHosts,omitempty"`
+	// The count of hosts in power management error state
+	PowerManagementErrorHosts PowerManagementErrorHosts `json:"PowerManagementErrorHosts,omitempty"`
 }
 
 // +kubebuilder:object:root=true
