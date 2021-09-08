@@ -245,6 +245,21 @@ const (
 	PowerManagementErrorHostsEmpty PowerManagementErrorHosts = 0
 )
 
+// ErrorHosts is count of Hosts in error state
+var ErrorHostsCount ErrorHosts = 0
+
+// RegistrationErrorHosts is count of Hosts in Registration error state
+var RegistrationErrorHostsCount RegistrationErrorHosts = 0
+
+// IntrospectionErrorHosts is count of Hosts in Introspection error state
+var IntrospectionErrorHostsCount IntrospectionErrorHosts = 0
+
+// ProvisioningErrorHosts is count of Hosts in Provisioning error state
+var ProvisioningErrorHostsCount ProvisioningErrorHosts = 0
+
+// PowerManagementErrorHosts is count of Hosts in Power Management error state
+var PowerManagementErrorHostsCount PowerManagementErrorHosts = 0
+
 const (
 	//NoBaremetalHost no bmo host found message
 	NoBaremetalHost string = "No BareMetalHost Found"
@@ -274,7 +289,7 @@ type HardwareClassificationStatus struct {
 	// The count of hosts in provisioning error state
 	ProvisioningErrorHosts ProvisioningErrorHosts `json:"provisioningErrorHosts,omitempty"`
 	// The count of hosts in power management error state
-	PowerManagementErrorHosts PowerManagementErrorHosts `json:"PowerManagementErrorHosts,omitempty"`
+	PowerManagementErrorHosts PowerManagementErrorHosts `json:"powerManagementErrorHosts,omitempty"`
 }
 
 // +kubebuilder:object:root=true
