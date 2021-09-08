@@ -107,16 +107,61 @@ func (hcReconciler *HardwareClassificationReconciler) Reconcile(req ctrl.Request
 		)
 		matchCount++
 		if host.Status.ErrorType == "registration error" {
-			hwcc.HardwareClassificationStatus.RegistrationErrorHosts += 1
+			hwcc.RegistrationErrorHostsCount += 1
+			hwcc.ErrorHostsCount += 1
 		} else if host.Status.ErrorType == "inspection error" {
-			hwcc.HardwareClassificationStatus.IntrospectionErrorHosts += 1
+			hwcc.IntrospectionErrorHostsCount += 1
+			hwcc.ErrorHostsCount += 1
 		} else if host.Status.ErrorType == "provisioning error" {
-			hwcc.HardwareClassificationStatus.ProvisioningErrorHosts += 1
+			hwcc.ProvisioningErrorHostsCount += 1
+			hwcc.ErrorHostsCount += 1
 		} else if host.Status.ErrorType == "power management error" {
-			hwcc.HardwareClassificationStatus.ProvisioningErrorHosts += 1
+			hwcc.PowerManagementErrorHostsCount += 1
+			hwcc.ErrorHostsCount += 1
 		}
 	}
-	hwcc.HardwareClassificationStatus.ErrorHosts = hwcc.HardwareClassificationStatus.RegistrationErrorHosts + hwcc.HardwareClassificationStatus.IntrospectionErrorHosts + hwcc.HardwareClassificationStatus.ProvisioningErrorHosts + hwcc.HardwareClassificationStatus.ProvisioningErrorHosts
+	if hardwareClassification.Status.RegistrationErrorHosts != hwcc.RegistrationErrorHostsCount {
+		hwcLog.Info("updating registration error count", "newValue", hwcc.RegistrationErrorHostsCount)
+		hardwareClassification.Status.RegistrationErrorHosts = hwcc.RegistrationErrorHostsCount
+		err = hcReconciler.Status().Update(context.TODO(), hardwareClassification)
+		if err != nil {
+			return ctrl.Result{}, errors.Wrap(err, "failed to update registration error count")
+		}
+	}
+	if hardwareClassification.Status.IntrospectionErrorHosts != hwcc.IntrospectionErrorHostsCount {
+		hwcLog.Info("updating introspection error count", "newValue", hwcc.IntrospectionErrorHostsCount)
+		hardwareClassification.Status.IntrospectionErrorHosts = hwcc.IntrospectionErrorHostsCount
+		err = hcReconciler.Status().Update(context.TODO(), hardwareClassification)
+		if err != nil {
+			return ctrl.Result{}, errors.Wrap(err, "failed to update introspection error count")
+		}
+	}
+	if hardwareClassification.Status.ProvisioningErrorHosts != hwcc.ProvisioningErrorHostsCount {
+		hwcLog.Info("updating provisioning error count", "newValue", hwcc.ProvisioningErrorHostsCount)
+		hardwareClassification.Status.ProvisioningErrorHosts = hwcc.ProvisioningErrorHostsCount
+		err = hcReconciler.Status().Update(context.TODO(), hardwareClassification)
+		if err != nil {
+			return ctrl.Result{}, errors.Wrap(err, "failed to update provisioning error count")
+		}
+	}
+	if hardwareClassification.Status.PowerManagementErrorHosts != hwcc.PowerManagementErrorHostsCount {
+		hwcLog.Info("updating power management error count", "newValue", hwcc.PowerManagementErrorHostsCount)
+		hardwareClassification.Status.PowerManagementErrorHosts = hwcc.PowerManagementErrorHostsCount
+		err = hcReconciler.Status().Update(context.TODO(), hardwareClassification)
+		if err != nil {
+			return ctrl.Result{}, errors.Wrap(err, "failed to update power management error count")
+		}
+	}
+	if hardwareClassification.Status.ErrorHosts != hwcc.ErrorHostsCount {
+		hwcLog.Info("updating error count", "newValue", hwcc.ErrorHostsCount)
+		hardwareClassification.Status.ErrorHosts = hwcc.ErrorHostsCount
+		err = hcReconciler.Status().Update(context.TODO(), hardwareClassification)
+		if err != nil {
+			return ctrl.Result{}, errors.Wrap(err, "failed to update error count")
+		}
+	}
+
+	// hwcc.ErrorHostsCount = hwcc.RegistrationErrorHostsCount + hwcc.IntrospectionErrorHostsCount + hwcc.ProvisioningErrorHostsCount + hwcc.PowerManagementErrorHostsCount
 
 	// Wait to delete the hardwareClassification resource until no
 	// hosts are labeled as matching its rules.
